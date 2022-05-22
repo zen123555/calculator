@@ -14,6 +14,11 @@ function divide(x,y){
     return x/y;
 }
 
+function clearDisplay(){
+    calcDisplay.innerHTML = '';
+    testVal = 0;
+}
+
 function operate(op, x, y){
     switch(op){
         case '+':
@@ -27,21 +32,51 @@ function operate(op, x, y){
     }
 }
 
-function setNumValue(selection){
-    for(var i=0; i<10; i++){
-        if(i==selection){
-            buttonVal = i
-            calcDisplay.innerHTML = buttonVal;
+/*
+might  not be needed...
+*/
+function setOpValue(op){
+
+    for(var i=0; i<ops.length; i++){
+        if(op === ops[i]){
+            calcDisplay.innerHTML += op;
+            testOp = op;
         }
-    }
+    } 
 }
 
-var buttonVal = 0;
+function setNumValue(selection){
+
+    for(var i=0; i<nums.length; i++){
+        if(selection==nums[i]){
+            calcDisplay.innerHTML += selection;
+            /*
+            testVal is constantly initialized to reflect 
+            what is in calcDisplay, saved as a string.
+            Using regex and string functions may be the key
+            to getting calculator to work
+            */
+            testVal = calcDisplay.innerHTML; 
+        }
+    }
+    
+}
+
+
+
+const nums = [0,1,2,3,4,5,6,7,8,9];
+const ops = ['+', '-', '/', '*', '.'];
+
+var testVal = 0;
 
 const calcDisplay = document.querySelector('.calc-output');
 
+/*
+might not be needed...
+
 const numbersGrid = document.querySelector('.numbers-grid');
 
+*/
 const one =  document.querySelector('.one');
 one.addEventListener('click', () => setNumValue(1));
 
@@ -69,16 +104,18 @@ eight.addEventListener('click', () => setNumValue(8));
 const nine =  document.querySelector('.nine');
 nine.addEventListener('click', () => setNumValue(9));
 
-const zero =  document.querySelector('.zero');
+const zero = document.querySelector('.zero');
 zero.addEventListener('click', () => setNumValue(0));
 
 const clear = document.querySelector('.clear');
-clear.addEventListener('click', () => setNumValue(0));
+clear.addEventListener('click', () => clearDisplay());
 
-const addOp =  document.querySelector('.ad-op');
+const addOp = document.querySelector('.add-op');
+addOp.addEventListener('click', () => setOpValue('+'));
 
 const decimal =  document.querySelector('.decimal');
+decimal.addEventListener('click', () => setOpValue('.'));
 
 const equalOp = document.querySelector('.equal-op');
-
+equalOp.addEventListener('click', () => setOpValue('='));
 
