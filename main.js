@@ -14,108 +14,106 @@ function divide(x,y){
     return x/y;
 }
 
-function clearDisplay(){
-    calcDisplay.innerHTML = '';
-    testVal = 0;
-}
-
 function operate(op, x, y){
     switch(op){
         case '+':
-            return add(x,y);
+            runningTotal += add(x,y);
+            break;
         case '-':
-            return subtract(x,y); 
+            runningTotal -= subtract(x,y); 
+            break;
         case '*':
-            return multiply(x,y);
+            runningTotal *= multiply(x,y);
+            break;
         case '/':
-            return divide(x,y);               
+            runningTotal /= divide(x,y);               
     }
+    calcResult.innerHTML = runningTotal;
 }
 
-/*
-might  not be needed...
-*/
-function setOpValue(op){
-
-    for(var i=0; i<ops.length; i++){
-        if(op === ops[i]){
-            calcDisplay.innerHTML += op;
-            testOp = op;
-        }
-    } 
+function clearDisplay(){
+    runningTotal = 0;
+    numVal1 = 0;
+    numVal2 = 0;
+    calcOutput.innerHTML = '';
+    calcResult.innerHTML= '';
+    opFlag = false;
 }
 
-function setNumValue(selection){
+function setDispVal(x){
+    calcOutput.innerHTML += x;
+}
 
-    for(var i=0; i<nums.length; i++){
-        if(selection==nums[i]){
-            calcDisplay.innerHTML += selection;
-            /*
-            testVal is constantly initialized to reflect 
-            what is in calcDisplay, saved as a string.
-            Using regex and string functions may be the key
-            to getting calculator to work
-            */
-            testVal = calcDisplay.innerHTML; 
-        }
-    }
-    
+function setOpVal(x){
+    opVal = x;
+    numVal1 = calcOutput.innerHTML;
 }
 
 
+var numVal1 ='';
+var numVal2 ='';
+var opVal = '';
+var opFlag = false;
 
-const nums = [0,1,2,3,4,5,6,7,8,9];
-const ops = ['+', '-', '/', '*', '.'];
+const calcOutput = document.querySelector('.calc-output');
+const calcResult = document.querySelector('.calc-result');
 
-var testVal = 0;
+var runningTotal = 0;
 
-const calcDisplay = document.querySelector('.calc-output');
-
-/*
-might not be needed...
-
-const numbersGrid = document.querySelector('.numbers-grid');
-
-*/
 const one =  document.querySelector('.one');
-one.addEventListener('click', () => setNumValue(1));
+one.addEventListener('click', () => setDispVal('1'));
 
 const two =  document.querySelector('.two');
-two.addEventListener('click', () => setNumValue(2));
+two.addEventListener('click', () => setDispVal('2'));
 
-const three =  document.querySelector('.three');
-three.addEventListener('click', () => setNumValue(3));
+const addOp = document.querySelector('.add-op');
+addOp.addEventListener('click', () => setOpVal('+'));
 
-const four =  document.querySelector('.four');
-four.addEventListener('click', () => setNumValue(4));
-
-const five =  document.querySelector('.five');
-five.addEventListener('click', () => setNumValue(5));
-
-const six =  document.querySelector('.six');
-six.addEventListener('click', () => setNumValue(6));
-
-const seven =  document.querySelector('.seven');
-seven.addEventListener('click', () => setNumValue(7));
-
-const eight =  document.querySelector('.eight');
-eight.addEventListener('click', () => setNumValue(8));
-
-const nine =  document.querySelector('.nine');
-nine.addEventListener('click', () => setNumValue(9));
-
-const zero = document.querySelector('.zero');
-zero.addEventListener('click', () => setNumValue(0));
+const equalOp = document.querySelector('.equal-op');
+equalOp.addEventListener('click', () => operate(opVal, Number(numVal1), Number(numVal2)));
 
 const clear = document.querySelector('.clear');
 clear.addEventListener('click', () => clearDisplay());
 
-const addOp = document.querySelector('.add-op');
-addOp.addEventListener('click', () => setOpValue('+'));
+/*
+
+const two =  document.querySelector('.two');
+two.addEventListener('click', () => returnNumVal(2));
+
+const three =  document.querySelector('.three');
+three.addEventListener('click', () => returnNumVal(3));
+
+const four =  document.querySelector('.four');
+four.addEventListener('click', () => returnNumVal(4));
+
+const five =  document.querySelector('.five');
+five.addEventListener('click', () => returnNumVal(5));
+
+const six =  document.querySelector('.six');
+six.addEventListener('click', () => returnNumVal(6));
+
+const seven =  document.querySelector('.seven');
+seven.addEventListener('click', () => returnNumVal(7));
+
+const eight =  document.querySelector('.eight');
+eight.addEventListener('click', () => returnNumVal(8));
+
+const nine =  document.querySelector('.nine');
+nine.addEventListener('click', () => returnNumVal(9));
+
+const zero = document.querySelector('.zero');
+zero.addEventListener('click', () => returnNumVal(0));
+
+
+
 
 const decimal =  document.querySelector('.decimal');
-decimal.addEventListener('click', () => setOpValue('.'));
+decimal.addEventListener('click', () => switchNumVal('.'));
 
 const equalOp = document.querySelector('.equal-op');
-equalOp.addEventListener('click', () => setOpValue('='));
+equalOp.addEventListener('click', () => switchNumVal('='));
+*/
+
+
+
 
