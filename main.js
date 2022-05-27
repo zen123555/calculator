@@ -29,29 +29,76 @@ function operate(op, x, y){
             runningTotal /= divide(x,y);               
     }
     calcResult.innerHTML = runningTotal;
+    switchOpFlag();//may need to test behavior 
 }
 
 function clearDisplay(){
     runningTotal = 0;
     numVal1 = 0;
     numVal2 = 0;
+    runningDisp1 ='';
+    runningDisp2 ='';
+    opVal = '';
     calcOutput.innerHTML = '';
     calcResult.innerHTML= '';
     opFlag = false;
 }
 
+
 function setDispVal(x){
-    calcOutput.innerHTML += x;
+    if(!opFlag){
+        runningDisp1 += x;
+        calcOutput.innerHTML = runningDisp1;
+    }else{
+        //calcOutput.innerHTML = '';
+        runningDisp2 += x;
+        calcOutput.innerHTML = runningDisp2;
+    }
+}
+
+/*
+opFlag is not switching back to false
+*/
+function switchOpFlag(){
+    if(opFlag === true){
+        opFlag = false;
+    }else if(opFlag === false){
+        opFlag = true;
+    }
 }
 
 function setOpVal(x){
+    if(!opFlag){
+        numVal1 = Number(calcOutput.innerHTML);
+    }else{
+        numVal2 = Number(calcOutput.innerHTML);
+    }
+
+    /*
+    perform calculation after second op click
+    Need to correct behavior 
+    EX: once '2 + 2 +' is entered, display result
+    */
+    if(opVal != ''){
+        operate(opVal, numVal1, numVal2);
+    }
+
     opVal = x;
-    numVal1 = calcOutput.innerHTML;
+
+    /*
+    get the innerHTML ready for the next assignments for numVal1 and numVal2
+    */
+    runningDisp1 = '';
+    runningDisp2 = '';
+    switchOpFlag();
 }
 
+var runningDisp1 = '';
+var runningDisp2 = '';
 
-var numVal1 ='';
-var numVal2 ='';
+var numVal1;
+var numVal2;
+
 var opVal = '';
 var opFlag = false;
 
@@ -70,7 +117,7 @@ const addOp = document.querySelector('.add-op');
 addOp.addEventListener('click', () => setOpVal('+'));
 
 const equalOp = document.querySelector('.equal-op');
-equalOp.addEventListener('click', () => operate(opVal, Number(numVal1), Number(numVal2)));
+equalOp.addEventListener('click', () => operate(opVal, numVal1, numVal2));
 
 const clear = document.querySelector('.clear');
 clear.addEventListener('click', () => clearDisplay());
